@@ -48,11 +48,10 @@ public class DFSStrategy extends SearchMethod {
 		// Set initial state
 		// Frontier will be used as a "stack" where we will put the states that will eventually lead to the solution. 
 		Frontier.add(puzzle.StartState);
-		System.out.println(Frontier.getLast());
+		System.out.println("Solving...");
 
 
 		while (Frontier.getLast() != puzzle.GoalState) {
-			System.out.println("iteration " + iteration++);
 			if (Frontier.getLast().equals(puzzle.GoalState)) {
 				// Solution!
 				return Frontier.getLast().GetPathToState();
@@ -67,7 +66,6 @@ public class DFSStrategy extends SearchMethod {
 			if (statesToExplore.size() == 0) {
 				// if the newly explored state doesn't have anywhere else to explore, 
 				// take a step back, (remove last item from Frontier, which acts as our stack)
-				System.out.println("no more nodes to explore, remove last: " + statesToExplore);
 				Frontier.removeLast();
 			} else {
 				
@@ -75,7 +73,6 @@ public class DFSStrategy extends SearchMethod {
 				PuzzleState nextStateToExplore = statesToExplore.get(getRandomNumber(0,statesToExplore.size()));
 				addToFrontier(nextStateToExplore);
 				addToSearched(nextStateToExplore);
-				System.out.println(Searched.size());
 			}
 
 		}
