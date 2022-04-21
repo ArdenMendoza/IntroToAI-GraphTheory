@@ -46,7 +46,7 @@ public class GreedyDFSStrategy extends SearchMethod {
 		// Frontier will be used as a "stack" where we will put the states that will
 		// eventually lead to the solution.
 		Frontier.add(puzzle.StartState);
-		System.out.println("solving...");
+		System.out.println("(GDFS) solving...");
 
 		while (Frontier.getLast() != puzzle.GoalState) {
 			if (Frontier.getLast().equals(puzzle.GoalState)) {
