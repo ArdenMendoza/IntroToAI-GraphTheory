@@ -12,7 +12,7 @@ public class DFSStrategy extends SearchMethod {
 		Searched = new LinkedList<PuzzleState>();
 		iteration = 0;
 	}
-	
+
 	private int iteration;
 
 	public boolean addToFrontier(PuzzleState aState) {
@@ -46,10 +46,10 @@ public class DFSStrategy extends SearchMethod {
 	public direction[] Solve(nPuzzle puzzle) {
 
 		// Set initial state
-		// Frontier will be used as a "stack" where we will put the states that will eventually lead to the solution. 
+		// Frontier will be used as a "stack" where we will put the states that will
+		// eventually lead to the solution.
 		Frontier.add(puzzle.StartState);
 		System.out.println("Solving...");
-
 
 		while (Frontier.getLast() != puzzle.GoalState) {
 			if (Frontier.getLast().equals(puzzle.GoalState)) {
@@ -64,13 +64,11 @@ public class DFSStrategy extends SearchMethod {
 			statesToExplore = filterExploredStates(statesToExplore);
 
 			if (statesToExplore.size() == 0) {
-				// if the newly explored state doesn't have anywhere else to explore, 
+				// if the newly explored state doesn't have anywhere else to explore,
 				// take a step back, (remove last item from Frontier, which acts as our stack)
 				Frontier.removeLast();
 			} else {
-				
-				
-				PuzzleState nextStateToExplore = statesToExplore.get(getRandomNumber(0,statesToExplore.size()));
+				PuzzleState nextStateToExplore = statesToExplore.get(getRandomNumber(0, statesToExplore.size()));
 				addToFrontier(nextStateToExplore);
 				addToSearched(nextStateToExplore);
 			}
