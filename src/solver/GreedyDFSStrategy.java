@@ -10,10 +10,7 @@ public class GreedyDFSStrategy extends SearchMethod {
 		longName = "GDFS Search";
 		Frontier = new LinkedList<PuzzleState>();
 		Searched = new LinkedList<PuzzleState>();
-		iteration = 0;
 	}
-
-	private int iteration;
 
 	public boolean addToFrontier(PuzzleState aState) {
 		if (!Searched.contains(aState) || !Frontier.contains(aState))
@@ -49,10 +46,9 @@ public class GreedyDFSStrategy extends SearchMethod {
 		// Frontier will be used as a "stack" where we will put the states that will
 		// eventually lead to the solution.
 		Frontier.add(puzzle.StartState);
-		System.out.println(Frontier.getLast());
+		System.out.println("solving...");
 
 		while (Frontier.getLast() != puzzle.GoalState) {
-			System.out.println("iteration " + iteration++);
 			if (Frontier.getLast().equals(puzzle.GoalState)) {
 				// Solution!
 				return Frontier.getLast().GetPathToState();
@@ -67,7 +63,6 @@ public class GreedyDFSStrategy extends SearchMethod {
 			if (statesToExplore.size() == 0) {
 				// if the newly explored state doesn't have anywhere else to explore,
 				// take a step back, (remove last item from Frontier, which acts as our stack)
-				System.out.println("no more nodes to explore, remove last: " + statesToExplore);
 				Frontier.removeLast();
 			} else {
 
@@ -82,7 +77,6 @@ public class GreedyDFSStrategy extends SearchMethod {
 				PuzzleState bestState = statesToExplore.get(0);
 				addToFrontier(bestState);
 				addToSearched(bestState);
-				System.out.println(Searched.size());
 			}
 		}
 
