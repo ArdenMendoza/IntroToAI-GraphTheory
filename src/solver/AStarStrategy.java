@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class AStarStrategy extends SearchMethod {
 	public AStarStrategy() {
-		code = "AStar";
+		code = "AS";
 		longName = "AStar Search";
 		Frontier = new LinkedList<PuzzleState>();
 		Searched = new LinkedList<PuzzleState>();
@@ -19,7 +19,7 @@ public class AStarStrategy extends SearchMethod {
 		// The formula for this is:
 		// f(n) = g(n) + h(n)
 		addToFrontier(puzzle.StartState);
-		System.out.println("(A*) solving...");
+		System.out.println("(AS) solving...");
 		
 		// Do this loop until the Frontier holds the possible solution
 		while (!Frontier.contains(puzzle.GoalState)) {
