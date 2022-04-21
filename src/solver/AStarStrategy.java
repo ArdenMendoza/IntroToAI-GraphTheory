@@ -18,15 +18,18 @@ public class AStarStrategy extends SearchMethod {
 		// States that are evaluated to be the best course to take on from each explored node(PuzzleState)
 		// The formula for this is:
 		// f(n) = g(n) + h(n)
+		
+		// First, put the StartState into the Frontier as the initial state
 		addToFrontier(puzzle.StartState);
 		System.out.println("(AS) solving...");
 		
 		// Do this loop until the Frontier holds the possible solution
 		while (!Frontier.contains(puzzle.GoalState)) {
-			// Get the current state in Frontier
+			// Get the last state in Frontier List then explore from that state
 			PuzzleState currentState = popFrontier();
 			ArrayList<PuzzleState> newStates = currentState.explore();
-			// Assign heuristic and evaluation value to current node being explored FROM.
+
+			// Assign heuristic and evaluate value to current node being explored FROM.
 			currentState.HeuristicValue = HeuristicValue(currentState, puzzle.GoalState);
 			currentState.setEvaluationFunction(currentState.Cost + currentState.HeuristicValue);
 
