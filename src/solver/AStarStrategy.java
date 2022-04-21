@@ -14,24 +14,33 @@ public class AStarStrategy extends SearchMethod {
 	
 	@Override
 	public direction[] Solve(nPuzzle puzzle) {
+		// We're going to use the Frontier as a queue of "priority" states. 
+		// States that are evaluated to be the best course to take on from each explored node(PuzzleState)
 		// The formula for this is:
 		// f(n) = g(n) + h(n)
 		addToFrontier(puzzle.StartState);
 		System.out.println("(A*) solving...");
+		
+		// Do this loop until the Frontier holds the possible solution
 		while (!Frontier.contains(puzzle.GoalState)) {
-			// Searched.add(PrioQueue.pollFirst());
-			ArrayList<PuzzleState> newStates = Frontier.getLast().explore();
-			PuzzleState currentState = Frontier.getFirst();
+			// Get the current state in Frontier
+			PuzzleState currentState = popFrontier();
+			ArrayList<PuzzleState> newStates = currentState.explore();
+			// Assign heuristic and evaluation value to current node being explored FROM.
 			currentState.HeuristicValue = HeuristicValue(currentState, puzzle.GoalState);
 			currentState.setEvaluationFunction(currentState.Cost + currentState.HeuristicValue);
-			// update each newly explored state with new evaluation value(g(n) + h(n))
+
+			// Update each newly explored state with new evaluation value(g(n) + h(n))
 			for (int i = 0; i < newStates.size(); i++) {
 				PuzzleState newState = newStates.get(i);
 				newState.HeuristicValue = HeuristicValue(newState, puzzle.GoalState);
 				newState.setEvaluationFunction(newState.Cost + newState.HeuristicValue);
+				// store them in SEARCHED list
 				addToSearched(newState);
 
+				// On every iteration of newly explored nodes, sort Searched list from lowest-greatest evaluation(heuristic + Cost)
 				Collections.sort(Searched, new PuzzleComparator());
+				// add the best evaluation(lowest evaluation value) to the Frontier
 				addToFrontier(Searched.get(0));
 			}
 		}
@@ -58,7 +67,7 @@ public class AStarStrategy extends SearchMethod {
 	@Override
 	protected PuzzleState popFrontier() {
 		// TODO Auto-generated method stub
-		return null;
+		return Frontier.getLast();
 	}
 
 	private int HeuristicValue(PuzzleState aState, PuzzleState goalState) {
