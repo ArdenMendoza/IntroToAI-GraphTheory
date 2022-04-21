@@ -11,41 +11,48 @@ public class AStarStrategy extends SearchMethod {
 		Frontier = new LinkedList<PuzzleState>();
 		Searched = new LinkedList<PuzzleState>();
 	}
-
+	
 	@Override
 	public direction[] Solve(nPuzzle puzzle) {
-		Frontier.add(puzzle.StartState);
+		// The formula for this is:
+		// f(n) = g(n) + h(n)
+		addToFrontier(puzzle.StartState);
 		System.out.println("(A*) solving...");
-		while (!Searched.contains(puzzle.GoalState)) {
-			Searched.add(Frontier.pollFirst());
-			ArrayList<PuzzleState> newStates = Searched.getFirst().explore();
-			// update each newly explored state with new evaluation value
+		while (!Frontier.contains(puzzle.GoalState)) {
+			// Searched.add(PrioQueue.pollFirst());
+			ArrayList<PuzzleState> newStates = Frontier.getLast().explore();
+			PuzzleState currentState = Frontier.getFirst();
+			currentState.HeuristicValue = HeuristicValue(currentState, puzzle.GoalState);
+			currentState.setEvaluationFunction(currentState.Cost + currentState.HeuristicValue);
+			// update each newly explored state with new evaluation value(g(n) + h(n))
 			for (int i = 0; i < newStates.size(); i++) {
 				PuzzleState newState = newStates.get(i);
 				newState.HeuristicValue = HeuristicValue(newState, puzzle.GoalState);
-				newState.setEvaluationFunction(newState.HeuristicValue + newState.Cost);
-				addToFrontier(newState);
+				newState.setEvaluationFunction(newState.Cost + newState.HeuristicValue);
 				addToSearched(newState);
+
+				Collections.sort(Searched, new PuzzleComparator());
+				addToFrontier(Searched.get(0));
 			}
 		}
-		Collections.sort(Searched, new PuzzleComparator());
+		Collections.sort(Frontier, new PuzzleComparator());
 		// get 2nd best state from the list. (1st is the solution of course)
-		return Searched.get(1).GetPathToState();
+		return Frontier.getFirst().GetPathToState();
 	}
 
 	protected boolean addToSearched(PuzzleState aState) {
-		if (!Searched.contains(aState)) {
+		if (!Frontier.contains(aState) || !Searched.contains(aState)) {
 			Searched.addLast(aState);
 		}
 		return true;
 	}
 
-	@Override
 	public boolean addToFrontier(PuzzleState aState) {
-		// TODO Auto-generated method stub
-		if (!Searched.contains(aState) || !Frontier.contains(aState))
-			Frontier.add(aState);
-		return !Searched.contains(aState) || !Frontier.contains(aState);
+		if (!Frontier.contains(aState)) {
+			Frontier.addLast(aState);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

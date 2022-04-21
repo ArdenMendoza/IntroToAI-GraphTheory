@@ -68,7 +68,7 @@ class nPuzzler
 			//We found a solution, print all the steps to success!
 			for(int j = 0; j < thisSolution.length; j++)
 			{
-				System.out.print(thisSolution[j].toString() + "-");
+				System.out.print(thisSolution[j].toString() + ";");
 			}
 			System.out.println();
 		}
